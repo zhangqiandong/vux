@@ -76,5 +76,19 @@ const vux = {
   XImg
 }
 
+const docs = {}
+for (var i in vux) {
+  docs[i] = docs[i] || {}
+  docs[i].props = docs[i].props || {}
+  for (var j in vux[i].props) {
+    const x = vux[i].props[j]
+    docs[i].props[j] = {
+      type: x.type ? x.type.name : x.type,
+      default: typeof x.default !== 'undefined' ? x.default : '无',
+      twoWay: x.twoWay ? x.twoWay : false
+    }
+  }
+}
+console.log(docs)
 module.exports = vux
 
