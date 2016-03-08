@@ -15,7 +15,6 @@ import Selector from './demos/Selector'
 import Tip from './demos/Tip'
 import Button from './demos/Button'
 import Textarea from './demos/Textarea'
-import Date from './demos/Date'
 import Flexbox from './demos/Flexbox'
 import Tab from './demos/Tab'
 import Swiper from './demos/Swiper'
@@ -49,10 +48,15 @@ import Calendar from './demos/Calendar'
 import Milestone from './demos/Milestone'
 import Circle from './demos/Circle'
 import Countup from './demos/Countup'
+import ColorPicker from './demos/Color-picker'
+import Pull2refresh from './demos/Pull2refresh'
 
-/* eslint-disable no-new */
 Vue.use(Router)
-var router = new Router()
+
+var router = new Router({
+  history: false, // use history=false when testing
+  saveScrollPosition: true
+})
 
 router.map({
   '/': {
@@ -93,9 +97,6 @@ router.map({
   },
   '/component/textarea': {
     component: Textarea
-  },
-  '/component/date': {
-    component: Date
   },
   '/component/flexbox': {
     component: Flexbox
@@ -195,13 +196,16 @@ router.map({
   },
   '/component/countup': {
     component: Countup
+  },
+  '/component/color-picker': {
+    component: ColorPicker
+  },
+  '/component/pull2refresh': {
+    component: Pull2refresh
   }
 })
 
 router.beforeEach(function (transition) {
-  if (transition.to && transition.to.fullPath !== '/') {
-    window.scrollTo(0, 0)
-  }
   if (/\/http/.test(transition.to.path)) {
     let url = transition.to.path.split('http')[1]
     location.href = `http${url}`
@@ -211,7 +215,9 @@ router.beforeEach(function (transition) {
 })
 
 router.afterEach(function (transition) {
-  // document.title = transition.to.fullPath === '/' ? `Home-Vux` : `${transition.to.fullPath.split('/')[2]}-Vux`
+  if (transition.to.fullPath !== '/demo') {
+    window.scrollTo(0, 0)
+  }
 })
 
 router.start(App, '#app')
