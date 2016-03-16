@@ -44,12 +44,12 @@ export default {
     fillPlaceholder: {
       type: String,
       required: false,
-      default: '其他'
+      default: 'Other'
     },
     fillLabel: {
       type: String,
       required: false,
-      default: '其他'
+      default: 'Other'
     }
   },
   methods: {

@@ -1,11 +1,11 @@
 <template>
 	<div class="weui_cell">
     <div class="weui_cell_hd">
-    	<label class="weui_label" :style="{width: labelWidth + 'em'}" v-if="title">{{title}}</label>
+    	<label class="weui_label" :style="{width: labelWidth + 'em'}" v-if="title">{{title}}<span></span></label>
     	<inline-desc v-if="inlineDesc">{{inlineDesc}}</inline-desc>
     </div>
     <div class="weui_cell_bd weui_cell_primary">
-      <input class="weui_input" :type="type" :pattern="pattern" placeholder="{{placeholder}}" v-model="value" @blur="blur" v-focus="focus"/>
+      <input class="weui_input" :type="type" :pattern="pattern" placeholder="{{placeholder}}" @focus="onFocus" v-model="value" @blur="onBlur" v-focus="focus"/>
     </div>
     <div class="weui_cell_ft">
       <icon type="clear" v-show="showClear && value" @click="clear"></icon>
@@ -63,6 +63,12 @@ export default {
     }
     if (this.equalWith) {
       this.showClear = false
+    }
+    // default valid = false
+    if (this.required && !this.value) {
+      this.valid = false
+    } else {
+      this.valid = true
     }
   },
   directives: {
@@ -128,9 +134,12 @@ export default {
       this.value = ''
       this.focus = true
     },
-    blur: function () {
-      this.setTouched()
+    onBlur: function () {
+      this.touched = true
       this.validate()
+    },
+    onFocus: function () {
+      this.touched = false
     },
     getError: function () {
       let key = Object.keys(this.errors)[0]
@@ -227,6 +236,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>
